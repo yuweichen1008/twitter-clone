@@ -10,9 +10,29 @@ NEXT_PUBLIC_FIREBASE_API_KEY=
 GOOGLE_CLIENT_ID=
 GOOGLE_CLIENT_SECRET=
 GOOGLE_MESSAGING_SENDER_ID=
+GOOGLE_APP_ID=
 ```
 
-run the development server:
+## Next Auth
+
+In order to make next auth work, we have to set NEXTAUTH_URL and NEXTAUTH_SECRET
+
+If you are using csh
+```
+setenv NEXTAUTH_URL https://localhost:3000
+setenv NEXTAUTH_SECRET test
+```
+If you are using bash
+```
+export NEXTAUTH_URL=https://localhost:3000
+export NEXTAUTH_SECRET=test
+```
+
+For more information, please go [next auth getting start](https://next-auth.js.org/getting-started/example)
+
+
+## Run the development server
+
 
 ```bash
 npm run dev

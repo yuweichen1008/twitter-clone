@@ -11,8 +11,8 @@ const firebaseConfig = {
   authDomain: "twitter-clone-50128.firebaseapp.com",
   projectId: "twitter-clone-50128",
   storageBucket: "twitter-clone-50128.appspot.com",
-  messagingSenderId: process.env.GOOGLE_MESSAGING_SENDER_ID,
-  appId: process.env.GOOGLE_APP_ID
+  messagingSenderId: "424803028341",
+  appId: "1:424803028341:web:c4f68e826d4f2ff205573c",
 };
 
 // Initialize Firebase
