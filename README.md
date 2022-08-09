@@ -11,11 +11,13 @@ GOOGLE_CLIENT_ID=
 GOOGLE_CLIENT_SECRET=
 GOOGLE_MESSAGING_SENDER_ID=
 GOOGLE_APP_ID=
+NEXTAUTH_URL=https://localhost:3000
+NEXTAUTH_SECRET=test
 ```
 
 ## Next Auth
 
-In order to make next auth work, we have to set NEXTAUTH_URL and NEXTAUTH_SECRET
+In order to make next auth work, we have to set NEXTAUTH_URL and NEXTAUTH_SECRET ( or define it in .env.local / .env) 
 
 If you are using csh
 ```
