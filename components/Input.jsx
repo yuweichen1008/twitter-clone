@@ -75,7 +75,7 @@ export default function Input() {
                                     onClick={() => { setSelectedFile(null) }}
                                     className='h-7 text-black absolute cursor-pointer'
                                 />
-                                <img src={selectedFile} className={`${loading && "animate-pause"}`} />
+                                <img src={selectedFile} className={`${loading && "animate-pulse"}`} />
                             </div>
                         )}
                         <div className='flex items-center justify-between pt-2.5'>
