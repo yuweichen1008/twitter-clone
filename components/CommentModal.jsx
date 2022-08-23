@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { EmojiHappyIcon, PhotographIcon, XIcon } from '@heroicons/react/solid'
 import { useRecoilState } from 'recoil'
 import { modalState, postIDState } from '../atom/modalAton'
+import { useRouter } from 'next/router'
 import Modal from 'react-modal'
 import Moment from 'react-moment'
-import { doc, onSnapshot } from 'firebase/firestore'
+import { addDoc, collection, doc, onSnapshot, serverTimestamp } from 'firebase/firestore'
 import { db } from '../firebase'
 import { useSession } from 'next-auth/react'
 
@@ -14,6 +15,7 @@ export default function CommentModal() {
   const [input, setInput] = useState("")
   const [post, setPost] = useState({})
   const { data: session } = useSession()
+  const router = useRouter()
 
   useEffect(() => {
     onSnapshot(doc(db, "posts", postID), (snapshot) => {
@@ -21,8 +23,18 @@ export default function CommentModal() {
     })
   }, [postID, db])
 
-  function sendComment() {
+  async function sendComment() {
+    await addDoc(collection(db, "posts", postID, "comments"), {
+      comment: input,
+      name : session.user.name,
+      username: session.user.username,
+      userImg: session.user.image,
+      timestamp: serverTimestamp()
+    })
 
+    setOpen(false)
+    setInput("")
+    router.push(`posts/${postID}`)
   }
 
   return (

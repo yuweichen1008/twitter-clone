@@ -14,10 +14,12 @@ export default function Post({ post }) {
   const { data: session } = useSession()
   const [likes, setLikes] = useState([])
   const [hasLiked, setHasLiked] = useState(false)
+  const [comments, setComments] = useState([])
   const [open, setOpen] = useRecoilState(modalState)
   const [postID, setPostID] = useRecoilState(postIDState)
 
   const likeRef = collection(db, "posts", post.id, "likes")
+  const commentRef = collection(db, "posts", post.id, "comments")
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
@@ -25,12 +27,16 @@ export default function Post({ post }) {
         setLikes(snapshot.docs)
       }
     )
+    const unsubscribe2 = onSnapshot(
+      commentRef, (snapshot) => {
+        setComments(snapshot.docs)
+      }
+    )
   }, [db])
 
   useEffect(() => {
     setHasLiked(likes.findIndex((like) => like.id === session?.user.uid) !== -1);
   }, [likes])
-
 
   async function likePost() {
     if (!session) {
@@ -63,7 +69,7 @@ export default function Post({ post }) {
         alt="img"
       />
       {/* right side */}
-      <div>
+      <div className='flex-1'>
         {/* Header */}
         <div className='flex items-center justify-between'>
           {/* post user info */}
@@ -96,17 +102,29 @@ export default function Post({ post }) {
 
         {/* icons */}
         <div className='flex justify-between text-gray-600'>
-          <ChatIcon
-            onClick={() => {
-              if (!session) {
-                signIn()
-              } else {
-                setPostID(post.id)
-                setOpen(!open)
-              }
-            }}
-            className='h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-100'
-          />
+          {/* Comment */}
+          <div className='flex items-center space-x-1 select-none'>
+            <ChatIcon
+              onClick={() => {
+                if (!session) {
+                  signIn()
+                } else {
+                  setPostID(post.id)
+                  setOpen(!open)
+                }
+              }}
+              className='h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-100'
+            />
+            {
+              comments.length > 0 && (
+                <span className={`text-sm select-none`}>
+                  {" "}
+                  {comments.length}
+                </span>
+              )
+            }
+          </div>
+          {/* Delete */}
           {
             session?.user.uid === post.data().id && (
               <TrashIcon
@@ -116,6 +134,7 @@ export default function Post({ post }) {
             )
 
           }
+          {/* Like */}
           <div className='flex items-center'>
             {hasLiked ? (
               <HeartIconFilled
@@ -137,7 +156,9 @@ export default function Post({ post }) {
               )
             }
           </div>
+          {/* Share */}
           <ShareIcon className='h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-100' />
+          {/* Chart */}
           <ChartBarIcon className='h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-100' />
         </div>
       </div>
