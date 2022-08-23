@@ -21,7 +21,7 @@ export default function CommentModal() {
     onSnapshot(doc(db, "posts", postID), (snapshot) => {
       setPost(snapshot)
     })
-  }, [postID, db])
+  }, [])
 
   async function sendComment() {
     await addDoc(collection(db, "posts", postID, "comments"), {
@@ -34,13 +34,14 @@ export default function CommentModal() {
 
     setOpen(false)
     setInput("")
-    router.push(`posts/${postID}`)
+    router.push(`/posts/${postID}`)
   }
 
   return (
     <div>
       {open && (
         <Modal
+          ariaHideApp={false}
           isOpen={open}
           onRequestClose={() => setOpen(false)}
           className='max-w-lg w-[90%] absolute top-24 left-[50%] translate-x-[-50%] bg-white border-gray-20 border-2 rounded-xl'
