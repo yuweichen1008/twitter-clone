@@ -28,7 +28,7 @@ export default function PostPage({ newsResults, randomUsersResults }) {
     //     console.log(post)
     // }, [post])
 
-    // get comments
+    // get comments of the post
     useEffect(() => {
         onSnapshot(
             query(
@@ -79,9 +79,9 @@ export default function PostPage({ newsResults, randomUsersResults }) {
                                     >
                                         <Comment
                                             key={comment.id}
-                                            commentId={comment.id}
-                                            originalPostId={id}
                                             comment={comment.data()}
+                                            commentID={comment.id}
+                                            originalPostID={id}
                                         />
                                     </motion.div>
                                 ))}
