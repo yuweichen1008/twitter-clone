@@ -1,5 +1,4 @@
 import Head from 'next/head'
-import Image from 'next/image'
 import CommentModal from '../components/CommentModal'
 import Feed from '../components/Feed'
 import Sidebar from '../components/Sidebar'

@@ -21,12 +21,12 @@ export default function CommentModal() {
     onSnapshot(doc(db, "posts", postID), (snapshot) => {
       setPost(snapshot)
     })
-  }, [])
+  }, [postID, db])
 
   async function sendComment() {
     await addDoc(collection(db, "posts", postID, "comments"), {
       comment: input,
-      name : session.user.name,
+      name: session.user.name,
       username: session.user.username,
       userImg: session.user.image,
       timestamp: serverTimestamp()
@@ -41,14 +41,16 @@ export default function CommentModal() {
     <div>
       {open && (
         <Modal
-          ariaHideApp={false}
           isOpen={open}
           onRequestClose={() => setOpen(false)}
           className='max-w-lg w-[90%] absolute top-24 left-[50%] translate-x-[-50%] bg-white border-gray-20 border-2 rounded-xl'
         >
           <div className='p-1'>
             <div className='border-b border-gray-200 py-2 px-1.5'>
-              <div onClick={() => setOpen(false)} className='hoverEffect w-9 h-9 flex items-center justify-center'>
+              <div
+                onClick={() => setOpen(false)}
+                className='hoverEffect w-9 h-9 flex items-center justify-center'
+              >
                 <XIcon className='h-[23px] text-gray-600' />
               </div>
             </div>
@@ -62,15 +64,13 @@ export default function CommentModal() {
               alt="img"
             />
             <h4 className='font-bold text-[15px] sm:text-[16px] hover:underline'>
-              {post?.name}
+              {post?.data()?.name}
             </h4>
             <span className='text-sm sm:text-[15px]'>
-              @{post?.data()?.username} -
+              @{post?.data()?.username} - {" "}
             </span>
             <span className='text-sm sm:text-[15px] hover:underline'>
-              <Moment fromNow>
-                {post?.data()?.timestamp?.toDate()}
-              </Moment>
+              <Moment fromNow>{post?.data()?.timestamp?.toDate()}</Moment>
             </span>
           </div>
 
@@ -94,15 +94,7 @@ export default function CommentModal() {
                   onChange={(e) => { setInput(e.target.value) }}
                 ></textarea>
               </div>
-              {/* {selectedFile && (
-                            <div className='relative'>
-                                <XIcon
-                                    onClick={() => { setSelectedFile(null) }}
-                                    className='h-7 text-black absolute cursor-pointer'
-                                />
-                                <img src={selectedFile} className={`${loading && "animate-pulse"}`} />
-                            </div>
-                        )} */}
+
               <div className='flex items-center justify-between pt-2.5'>
                 <div className='flex'>
                   <div
@@ -132,6 +124,5 @@ export default function CommentModal() {
         </Modal>
       )}
     </div>
-
   )
 }

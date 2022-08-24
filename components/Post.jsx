@@ -21,7 +21,7 @@ export default function Post({ post, id }) {
 
   const likeRef = collection(db, "posts", id, "likes")
   const commentRef = collection(db, "posts", id, "comments")
-  const rounter = useRouter()
+  const router = useRouter()
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
@@ -67,7 +67,7 @@ export default function Post({ post, id }) {
       if (post.data().image) {
         deleteObject(ref(storage, `posts/${id}/image`))
       }
-      rounter.push('/')
+      router.push('/')
     }
   }
 
@@ -89,7 +89,7 @@ export default function Post({ post, id }) {
               {post?.data()?.name}
             </h4>
             <span className='text-sm sm:text-[15px]'>
-              @{post?.data()?.username} -
+              @{post?.data()?.username} - {" "}
             </span>
             <span className='text-sm sm:text-[15px] hover:underline'>
               <Moment fromNow>
@@ -101,7 +101,10 @@ export default function Post({ post, id }) {
           <DotsHorizontalIcon className='h-10 hoverEffect w-10 hover:bg-sky-100 p-2' />
         </div>
         {/* post text */}
-        <p className='text-gray-800 text-[15px] sm:text-[16px] mb-2'>
+        <p
+          onClick={()=> router.push(`/posts/${id}`)}
+          className='text-gray-800 text-[15px] sm:text-[16px] mb-2'
+        >
           {post?.data()?.text}
         </p>
         {/* post image */}
@@ -121,17 +124,14 @@ export default function Post({ post, id }) {
                   signIn()
                 } else {
                   setPostID(id)
-                  setOpen((prevState) => !prevState)
+                  setOpen(!open)
                 }
               }}
               className='h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-100'
             />
             {
               comments.length > 0 && (
-                <span className={`text-sm select-none`}>
-                  {" "}
-                  {comments.length}
-                </span>
+                <span className='text-sm'>{comments.length}</span>
               )
             }
           </div>
@@ -172,7 +172,6 @@ export default function Post({ post, id }) {
           <ChartBarIcon className='h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-100' />
         </div>
       </div>
-
     </div>
   )
 }
