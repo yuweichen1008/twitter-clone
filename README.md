@@ -46,6 +46,15 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
 
+## Revise
+
+Pay attention to usage of useState default value. For example, if you use [] instead of null in setPost
+const [post, setPost] = useState() // Notice here, do not use [] otherwise it will has sideEffect on page refresh generation
+
+This might cause some error during reloading
+Sometimes, however, in Feed, we have to set this to [] inorder to make code word.
+TL; DR My code works after several iteration
+
 ## Deploy on Vercel
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.

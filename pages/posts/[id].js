@@ -7,20 +7,37 @@ import Widgets from '../../components/Widgets'
 import Post from '../../components/Post'
 import { ArrowLeftIcon } from '@heroicons/react/solid'
 import { db } from '../../firebase'
-import { doc, onSnapshot } from 'firebase/firestore'
+import { onSnapshot, doc, query, collection, orderBy } from 'firebase/firestore'
+import { AnimatePresence, motion } from "framer-motion";
+import Comment from '../../components/Comment'
 
 export default function PostPage({ newsResults, randomUsersResults }) {
 
     const router = useRouter()
     const { id } = router.query
-    const [post, setPost] = useState([])
+    const [post, setPost] = useState() // Notice here, do not use [] otherwise it will has sideEffect on page refresh generation
+    const [comments, setComments] = useState([])
 
     useEffect(
         () => onSnapshot(doc(db, "posts", id), (snapshot) => setPost(snapshot))
         , [db, id]
     )
 
+    // Debug code
+    // useEffect(()=>{
+    //     console.log(post)
+    // }, [post])
+
     // get comments
+    useEffect(() => {
+        onSnapshot(
+            query(
+                collection(db, "posts", id, "comments"),
+                orderBy("timestamp", "desc")
+            ),
+            (snapshot) => setComments(snapshot.docs)
+        )
+    }, [db, id])
 
     return (
         <div>
@@ -49,6 +66,28 @@ export default function PostPage({ newsResults, randomUsersResults }) {
                     <Post id={id} post={post} />
 
                     {/* Comments */}
+                    {comments.length > 0 && (
+                        <div className="">
+                            <AnimatePresence>
+                                {comments.map((comment) => (
+                                    <motion.div
+                                        key={comment.id}
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        exit={{ opacity: 0 }}
+                                        transition={{ duration: 1 }}
+                                    >
+                                        <Comment
+                                            key={comment.id}
+                                            commentId={comment.id}
+                                            originalPostId={id}
+                                            comment={comment.data()}
+                                        />
+                                    </motion.div>
+                                ))}
+                            </AnimatePresence>
+                        </div>
+                    )}
                 </div>
 
                 {/* Widgets */}
