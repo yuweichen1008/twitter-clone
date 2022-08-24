@@ -15,7 +15,7 @@ export default function Widgets({ newsResults, randomUsersResults }) {
         </div>
       </div>
       <div className='text-gray-700 space-y-3 rounded-xl pt-2 bg-gray-200 w-[90%] xl:w-[75%]'>
-        <h4 className='font-bold text-xl px-4'>What's happening</h4>
+        <h4 className='font-bold text-xl px-4'>Whats happening</h4>
         <AnimatePresence>
           {newsResults.slice(0, articleNum).map((article) => (
             <motion.div

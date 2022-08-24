@@ -69,13 +69,13 @@ export default function PostPage({ newsResults, randomUsersResults }) {
                     {comments.length > 0 && (
                         <div className="">
                             <AnimatePresence>
-                                {comments.map((comment) => (
+                                {comments.map((comment, index) => (
                                     <motion.div
                                         key={comment.id}
                                         initial={{ opacity: 0 }}
                                         animate={{ opacity: 1 }}
                                         exit={{ opacity: 0 }}
-                                        transition={{ duration: 1 }}
+                                        transition={{ duration: index*.5 }}
                                     >
                                         <Comment
                                             key={comment.id}
